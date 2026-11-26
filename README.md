@@ -1,5 +1,61 @@
 # Optica-HOE
 
+Prototipo numérico de un elemento óptico holográfico reflectivo para reconstruir el logo de Vitro a 2 m del observador, con geometría CAD del parabrisas.
+
+## Versión final — ejecución
+
+Usar MATLAB Online o una instalación de MATLAB compatible con `stlread` (devuelve una triangulación), `xline` y `savefig` (se recomienda R2018b o posterior).
+
+Colocar estos tres archivos en la misma carpeta:
+
+- `HOE_Final.m` — programa autónomo.
+- `parabrisas.stl` — CAD del vidrio, coordenadas en mm.
+- `logo.png` — el mismo logo claro sobre fondo oscuro de las pruebas.
+
+Ejecutar:
+
+```matlab
+HOE_Final
+```
+
+No requiere ejecutar las revisiones anteriores ni conservar sus archivos MAT. El CAD se ajusta de nuevo en cada ejecución. También acepta rutas mediante `HOE_Final(cadFile,logoFile)`.
+
+## Parámetros definitivos
+
+532 nm, incidencia 30°, HOE 20 × 20 mm, pupila de 5 mm, ojo a 600 mm del HOE, plano virtual 1400 mm detrás del HOE (2 m desde el ojo), logo de 50 mm de ancho, malla 2048 × 2048, semilla 7, 40 iteraciones convencionales y 40 de optimización con pupila.
+
+## Estructura del código
+
+1. Lectura y ajuste local del CAD.
+2. Parámetros y preparación del logo.
+3. Propagación de Fresnel.
+4. Diseño iterativo de fase: Gerchberg-Saxton y optimización con pupila.
+5. Barrido axial.
+6. Compensación ideal de fase por curvatura.
+7. Guardado de resultados.
+8. Figuras ligeras sin transparencias ni texturas 3D.
+
+## Archivos generados
+
+En `resultados_Final/`:
+
+- `datos_HOE.mat` (se guarda antes de generar gráficos).
+- `reconstruccion.png`, `profundidad.png`, `curvatura.png`.
+- `prototipo_3D.png`, `prototipo_3D.fig`.
+- `geometria_3D.png`, `geometria_3D.fig`, `logo_observado.png`.
+
+## Comprobación
+
+La R3 de 50 mm ejecutada en MATLAB Online mostró captura de 37.68 %, similitud de amplitud de 0.901 y máximo axial a 2.00 m. Son valores de referencia redondeados, no resultados ya verificados de RFinal. Comparar la salida nueva con ellos usando los mismos archivos. RFinal conserva el núcleo óptico de R3 y el ajuste geométrico de R2, pero todavía requiere una ejecución de comprobación en MATLAB.
+
+## Alcance y limitaciones
+
+Modelo escalar idealizado de fase reflectiva en aire. No calcula refracción multicapa, eficiencia de difracción volumétrica ni fabricabilidad. La compensación de curvatura es una cancelación algebraica ideal, no validación independiente. Si el paso de fase supera pi, se omite la predicción cuantitativa del caso sin compensar. La malla STL se simplifica solamente para dibujar; comprobar orientación, unidades y que los puntos del ajuste pertenecen al vidrio. La captura es potencia relativa del campo ideal que entra en la pupila, no eficiencia de un dispositivo real. La gráfica 3D es geométrica; la imagen del logo procede de la reconstrucción numérica, con gamma de presentación. No publicar el CAD del socio formador sin permiso.
+
+## Historial de desarrollo
+
+Las siguientes instrucciones son históricas y no son necesarias para ejecutar la versión final. Se conservan todos los scripts anteriores.
+
 Prototipo de un elemento óptico holográfico reflectivo para generar una imagen virtual a 2 m del observador.
 
 ## Ejecución
