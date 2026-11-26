@@ -1,0 +1,9 @@
+*.stp
+*.step
+*.stl
+*.STP
+*.STEP
+*.STL
+resultados_HOE/
+*.asv
+logo.png
